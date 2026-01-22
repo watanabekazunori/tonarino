@@ -3,19 +3,11 @@
 -- Supabaseで実行するSQL
 -- =============================================
 
--- 1. ユーザー（店舗オーナー）テーブル
-CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,
-  password_hash VARCHAR(255), -- Supabase Authを使う場合は不要
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- 2. 店舗情報テーブル
+-- 1. 店舗情報テーブル
+-- ※ user_id は Supabase Auth の auth.users.id を参照
 CREATE TABLE shops (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
 
   -- 基本情報
   shop_name VARCHAR(255) NOT NULL,
@@ -42,7 +34,7 @@ CREATE TABLE shops (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. 口コミスナップショット（定期取得データ）
+-- 2. 口コミスナップショット（定期取得データ）
 CREATE TABLE review_snapshots (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
@@ -61,7 +53,7 @@ CREATE TABLE review_snapshots (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 4. ランキングデータ
+-- 3. ランキングデータ
 CREATE TABLE rankings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
@@ -72,6 +64,7 @@ CREATE TABLE rankings (
   -- 順位
   rank INTEGER NOT NULL,
   total_shops INTEGER NOT NULL, -- エリア内の総店舗数
+  value VARCHAR(50), -- 表示用の値 "4.6", "312件", "¥3,200" など
 
   -- 前回比較
   previous_rank INTEGER,
@@ -86,7 +79,7 @@ CREATE TABLE rankings (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 5. 課題・強み分析
+-- 4. 課題・強み分析
 CREATE TABLE analysis_issues (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
@@ -98,16 +91,17 @@ CREATE TABLE analysis_issues (
   -- 詳細
   summary TEXT,
   mention_count INTEGER, -- 言及件数
+  details JSONB, -- 詳細分析 ["土日の18-20時に集中", ...]
 
   -- 対策案（JSON配列）
-  solutions JSONB,
+  solutions JSONB, -- [{"title": "予約システム導入", "effort": "中", "impact": "高", "description": "..."}]
 
   -- 分析日時
   analysis_date DATE NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 6. 競合店データ
+-- 5. 競合店データ
 CREATE TABLE competitors (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shop_id UUID REFERENCES shops(id) ON DELETE CASCADE, -- 自店舗
@@ -117,9 +111,32 @@ CREATE TABLE competitors (
   competitor_place_id VARCHAR(255),
   competitor_rating DECIMAL(2, 1),
   competitor_review_count INTEGER,
+  competitor_category VARCHAR(50),
 
   -- 距離
   distance_meters INTEGER,
+
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 6. 口コミ生データ（AI分析用）
+CREATE TABLE reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
+
+  -- 口コミ内容
+  author_name VARCHAR(100),
+  rating INTEGER, -- 1-5
+  text TEXT,
+  review_time TIMESTAMP WITH TIME ZONE,
+
+  -- 感情分析結果
+  sentiment VARCHAR(20), -- 'positive', 'negative', 'neutral'
+  sentiment_score DECIMAL(3, 2), -- -1.0 ~ 1.0
+  categories JSONB, -- ["料理", "接客"] など該当カテゴリ
+
+  -- Google Places
+  google_review_id VARCHAR(255),
 
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -134,41 +151,45 @@ CREATE INDEX idx_shops_category ON shops(category);
 CREATE INDEX idx_review_snapshots_shop_date ON review_snapshots(shop_id, snapshot_date);
 CREATE INDEX idx_rankings_shop_category ON rankings(shop_id, category, ranking_date);
 CREATE INDEX idx_analysis_issues_shop ON analysis_issues(shop_id, analysis_date);
+CREATE INDEX idx_reviews_shop ON reviews(shop_id);
+CREATE INDEX idx_reviews_sentiment ON reviews(shop_id, sentiment);
 
 -- =============================================
--- Row Level Security (RLS) - Supabase用
+-- Row Level Security (RLS)
 -- =============================================
 
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shops ENABLE ROW LEVEL SECURITY;
 ALTER TABLE review_snapshots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE rankings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE analysis_issues ENABLE ROW LEVEL SECURITY;
 ALTER TABLE competitors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 
--- ユーザーは自分のデータのみアクセス可能
-CREATE POLICY "Users can view own data" ON users
-  FOR SELECT USING (auth.uid() = id);
-
-CREATE POLICY "Users can view own shops" ON shops
+-- ユーザーは自分の店舗データのみアクセス可能
+CREATE POLICY "Users can manage own shops" ON shops
   FOR ALL USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can view own reviews" ON review_snapshots
-  FOR SELECT USING (
+  FOR ALL USING (
     shop_id IN (SELECT id FROM shops WHERE user_id = auth.uid())
   );
 
 CREATE POLICY "Users can view own rankings" ON rankings
-  FOR SELECT USING (
+  FOR ALL USING (
     shop_id IN (SELECT id FROM shops WHERE user_id = auth.uid())
   );
 
 CREATE POLICY "Users can view own analysis" ON analysis_issues
-  FOR SELECT USING (
+  FOR ALL USING (
     shop_id IN (SELECT id FROM shops WHERE user_id = auth.uid())
   );
 
 CREATE POLICY "Users can view own competitors" ON competitors
-  FOR SELECT USING (
+  FOR ALL USING (
+    shop_id IN (SELECT id FROM shops WHERE user_id = auth.uid())
+  );
+
+CREATE POLICY "Users can view own review data" ON reviews
+  FOR ALL USING (
     shop_id IN (SELECT id FROM shops WHERE user_id = auth.uid())
   );

@@ -42,8 +42,28 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Database Layer -->
+  <!-- Config & Database Layer -->
+  <script src="config.js"></script>
   <script src="db.js"></script>
+
+  <!-- Google Maps API (動的に読み込み) -->
+  <script>
+    (function loadGoogleMaps() {
+      if (window.CONFIG && window.CONFIG.GOOGLE_MAPS_API_KEY &&
+          window.CONFIG.GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY') {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${window.CONFIG.GOOGLE_MAPS_API_KEY}&libraries=places&language=ja`;
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          if (window.MapsService) window.MapsService.init();
+        };
+        document.head.appendChild(script);
+      }
+    })();
+  </script>
+  <script src="maps.js"></script>
+  <script src="ai.js"></script>
 
   <!-- App -->
   <script type="text/babel" src="app.js"></script>

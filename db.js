@@ -2,18 +2,21 @@
 // TONARINO - Supabase データベース連携
 // =============================================
 
-// Supabaseクライアントの初期化
-// ※ 実際の値はSupabaseダッシュボードから取得
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-
-// Supabaseクライアント（CDNから読み込み想定）
-// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 let supabase = null;
 
+// Supabaseクライアント初期化
 function initSupabase() {
-  if (typeof window !== 'undefined' && window.supabase) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  if (!window.CONFIG || !window.CONFIG.SUPABASE_URL || window.CONFIG.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    console.warn('Supabase設定が未完了です。config.jsを設定してください。');
+    return null;
+  }
+
+  if (typeof window.supabase !== 'undefined') {
+    supabase = window.supabase.createClient(
+      window.CONFIG.SUPABASE_URL,
+      window.CONFIG.SUPABASE_ANON_KEY
+    );
+    console.log('Supabase initialized');
   }
   return supabase;
 }
@@ -25,6 +28,7 @@ function initSupabase() {
 const Auth = {
   // 新規登録
   async signUp(email, password) {
+    if (!supabase) throw new Error('Supabase未初期化');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -35,6 +39,7 @@ const Auth = {
 
   // ログイン
   async signIn(email, password) {
+    if (!supabase) throw new Error('Supabase未初期化');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -45,14 +50,24 @@ const Auth = {
 
   // ログアウト
   async signOut() {
+    if (!supabase) throw new Error('Supabase未初期化');
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   },
 
   // 現在のユーザー取得
   async getCurrentUser() {
+    if (!supabase) return null;
     const { data: { user } } = await supabase.auth.getUser();
     return user;
+  },
+
+  // セッション監視
+  onAuthStateChange(callback) {
+    if (!supabase) return null;
+    return supabase.auth.onAuthStateChange((event, session) => {
+      callback(event, session);
+    });
   },
 };
 
@@ -63,7 +78,10 @@ const Auth = {
 const ShopService = {
   // 店舗登録
   async createShop(shopData) {
+    if (!supabase) throw new Error('Supabase未初期化');
     const user = await Auth.getCurrentUser();
+    if (!user) throw new Error('ログインが必要です');
+
     const { data, error } = await supabase
       .from('shops')
       .insert({
@@ -73,8 +91,11 @@ const ShopService = {
         email: shopData.email,
         phone: shopData.phone,
         address: shopData.address,
-        station: shopData.station,
+        station: shopData.station || null,
         category: shopData.category,
+        latitude: shopData.latitude || null,
+        longitude: shopData.longitude || null,
+        google_place_id: shopData.googlePlaceId || null,
       })
       .select()
       .single();
@@ -85,7 +106,10 @@ const ShopService = {
 
   // 自店舗取得
   async getMyShop() {
+    if (!supabase) return null;
     const user = await Auth.getCurrentUser();
+    if (!user) return null;
+
     const { data, error } = await supabase
       .from('shops')
       .select('*')
@@ -98,9 +122,13 @@ const ShopService = {
 
   // 店舗情報更新
   async updateShop(shopId, updates) {
+    if (!supabase) throw new Error('Supabase未初期化');
     const { data, error } = await supabase
       .from('shops')
-      .update(updates)
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+      })
       .eq('id', shopId)
       .select()
       .single();
@@ -117,6 +145,7 @@ const ShopService = {
 const ReviewService = {
   // 最新の口コミスナップショット取得
   async getLatestSnapshot(shopId) {
+    if (!supabase) return null;
     const { data, error } = await supabase
       .from('review_snapshots')
       .select('*')
@@ -129,8 +158,30 @@ const ReviewService = {
     return data;
   },
 
-  // 口コミ推移取得（過去30日）
+  // スナップショット保存
+  async saveSnapshot(shopId, snapshotData) {
+    if (!supabase) throw new Error('Supabase未初期化');
+    const { data, error } = await supabase
+      .from('review_snapshots')
+      .insert({
+        shop_id: shopId,
+        rating: snapshotData.rating,
+        review_count: snapshotData.reviewCount,
+        positive_ratio: snapshotData.positiveRatio,
+        negative_ratio: snapshotData.negativeRatio,
+        neutral_ratio: snapshotData.neutralRatio,
+        snapshot_date: new Date().toISOString().split('T')[0],
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 口コミ推移取得（過去N日）
   async getReviewHistory(shopId, days = 30) {
+    if (!supabase) return [];
     const fromDate = new Date();
     fromDate.setDate(fromDate.getDate() - days);
 
@@ -142,7 +193,42 @@ const ReviewService = {
       .order('snapshot_date', { ascending: true });
 
     if (error) throw error;
+    return data || [];
+  },
+
+  // 口コミ生データ保存
+  async saveReviews(shopId, reviews) {
+    if (!supabase) throw new Error('Supabase未初期化');
+    const reviewsToInsert = reviews.map(r => ({
+      shop_id: shopId,
+      author_name: r.authorName,
+      rating: r.rating,
+      text: r.text,
+      review_time: r.time,
+      google_review_id: r.googleReviewId || null,
+    }));
+
+    const { data, error } = await supabase
+      .from('reviews')
+      .upsert(reviewsToInsert, { onConflict: 'google_review_id' })
+      .select();
+
+    if (error) throw error;
     return data;
+  },
+
+  // 口コミ取得
+  async getReviews(shopId, limit = 50) {
+    if (!supabase) return [];
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('shop_id', shopId)
+      .order('review_time', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data || [];
   },
 };
 
@@ -151,8 +237,33 @@ const ReviewService = {
 // =============================================
 
 const RankingService = {
-  // カテゴリ別ランキング取得
-  async getRankingByCategory(shopId, category) {
+  // ランキング保存
+  async saveRanking(shopId, rankingData) {
+    if (!supabase) throw new Error('Supabase未初期化');
+    const { data, error } = await supabase
+      .from('rankings')
+      .insert({
+        shop_id: shopId,
+        category: rankingData.category,
+        rank: rankingData.rank,
+        total_shops: rankingData.totalShops,
+        value: rankingData.value,
+        previous_rank: rankingData.previousRank,
+        rank_change: rankingData.rankChange,
+        area_type: rankingData.areaType,
+        area_name: rankingData.areaName,
+        ranking_date: new Date().toISOString().split('T')[0],
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // カテゴリ別最新ランキング取得
+  async getLatestRanking(shopId, category) {
+    if (!supabase) return null;
     const { data, error } = await supabase
       .from('rankings')
       .select('*')
@@ -167,7 +278,8 @@ const RankingService = {
   },
 
   // 全カテゴリのランキング取得
-  async getAllRankings(shopId) {
+  async getAllLatestRankings(shopId) {
+    if (!supabase) return {};
     const categories = [
       '総合評価', '口コミ数', 'コスパ', '客単価安い', '客単価高い',
       '評価上昇率', '料理', '接客', '雰囲気', '清潔感', '新着口コミ', 'リピート'
@@ -175,25 +287,9 @@ const RankingService = {
 
     const rankings = {};
     for (const category of categories) {
-      rankings[category] = await this.getRankingByCategory(shopId, category);
+      rankings[category] = await this.getLatestRanking(shopId, category);
     }
     return rankings;
-  },
-
-  // エリア内の全店舗ランキング取得
-  async getAreaRanking(areaName, category) {
-    const { data, error } = await supabase
-      .from('rankings')
-      .select(`
-        *,
-        shops (shop_name, category)
-      `)
-      .eq('area_name', areaName)
-      .eq('category', category)
-      .order('rank', { ascending: true });
-
-    if (error) throw error;
-    return data;
   },
 };
 
@@ -202,8 +298,31 @@ const RankingService = {
 // =============================================
 
 const AnalysisService = {
+  // 課題保存
+  async saveIssue(shopId, issueData) {
+    if (!supabase) throw new Error('Supabase未初期化');
+    const { data, error } = await supabase
+      .from('analysis_issues')
+      .insert({
+        shop_id: shopId,
+        issue_type: issueData.type,
+        category: issueData.category,
+        summary: issueData.summary,
+        mention_count: issueData.mentionCount,
+        details: issueData.details,
+        solutions: issueData.solutions,
+        analysis_date: new Date().toISOString().split('T')[0],
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
   // 最新の課題・強み取得
   async getLatestIssues(shopId) {
+    if (!supabase) return [];
     const { data, error } = await supabase
       .from('analysis_issues')
       .select('*')
@@ -212,20 +331,7 @@ const AnalysisService = {
       .order('mention_count', { ascending: false });
 
     if (error) throw error;
-    return data;
-  },
-
-  // 課題タイプ別取得
-  async getIssuesByType(shopId, issueType) {
-    const { data, error } = await supabase
-      .from('analysis_issues')
-      .select('*')
-      .eq('shop_id', shopId)
-      .eq('issue_type', issueType)
-      .order('mention_count', { ascending: false });
-
-    if (error) throw error;
-    return data;
+    return data || [];
   },
 };
 
@@ -234,8 +340,39 @@ const AnalysisService = {
 // =============================================
 
 const CompetitorService = {
-  // 競合店一覧取得
+  // 競合店保存
+  async saveCompetitors(shopId, competitors) {
+    if (!supabase) throw new Error('Supabase未初期化');
+
+    // 既存データ削除
+    await supabase
+      .from('competitors')
+      .delete()
+      .eq('shop_id', shopId);
+
+    // 新規データ挿入
+    const competitorsToInsert = competitors.map(c => ({
+      shop_id: shopId,
+      competitor_name: c.name,
+      competitor_place_id: c.placeId,
+      competitor_rating: c.rating,
+      competitor_review_count: c.reviewCount,
+      competitor_category: c.category,
+      distance_meters: c.distanceMeters,
+    }));
+
+    const { data, error } = await supabase
+      .from('competitors')
+      .insert(competitorsToInsert)
+      .select();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 競合店取得
   async getCompetitors(shopId) {
+    if (!supabase) return [];
     const { data, error } = await supabase
       .from('competitors')
       .select('*')
@@ -243,12 +380,12 @@ const CompetitorService = {
       .order('distance_meters', { ascending: true });
 
     if (error) throw error;
-    return data;
+    return data || [];
   },
 };
 
 // =============================================
-// エクスポート（グローバル変数として）
+// エクスポート
 // =============================================
 
 window.TonarinoDB = {
@@ -260,3 +397,8 @@ window.TonarinoDB = {
   AnalysisService,
   CompetitorService,
 };
+
+// 自動初期化
+document.addEventListener('DOMContentLoaded', () => {
+  initSupabase();
+});
