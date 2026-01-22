@@ -2,18 +2,19 @@
 // TONARINO 設定ファイル
 // =============================================
 
-// Supabase設定
-// ※ Supabaseダッシュボード > Settings > API から取得
+// ⚠️ 本番環境では環境変数を使用してください
+// Vercelの場合: Settings > Environment Variables で設定
+
 const CONFIG = {
   // Supabase
-  SUPABASE_URL: 'https://ixqewkutfeagndlgndmw.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml4cWV3a3V0ZmVhZ25kbGduZG13Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMDM1MjUsImV4cCI6MjA4NDU3OTUyNX0.exhUlm_sEL_hBSWv4TkpTe-EwzKVLvrOTKWcgxmN07M',
+  SUPABASE_URL: 'YOUR_SUPABASE_URL',
+  SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY',
 
   // Google Maps Platform
-  GOOGLE_MAPS_API_KEY: 'AIzaSyAugDizlHfCowPpO1Wddm_lP715QO8u4xs',
+  GOOGLE_MAPS_API_KEY: 'YOUR_GOOGLE_MAPS_API_KEY',
 
   // Gemini API (AI分析用) - 未設定の場合はデモモードで動作
-  GEMINI_API_KEY: 'AIzaSyDfiR06o5R2dXmDcMtjCc7pJscv6Z5xBxQ',
+  GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY',
 
   // アプリ設定
   APP_NAME: 'TONARINO',
