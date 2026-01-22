@@ -129,35 +129,43 @@ const MapsService = {
   // 競合店検索
   // =============================================
 
-  // 周辺の競合店を検索
-  async searchNearbyCompetitors(latitude, longitude, category, radiusMeters = 2000) {
+  // 周辺の競合店を検索（同じ業種で検索）
+  async searchNearbyCompetitors(latitude, longitude, category, radiusMeters = 3000) {
     if (!this.isInitialized) return [];
 
-    // カテゴリをGoogle Placesのタイプに変換
-    const typeMap = {
-      '居酒屋': 'bar',
-      'カフェ': 'cafe',
-      'レストラン': 'restaurant',
-      'ラーメン': 'restaurant',
-      '焼肉': 'restaurant',
-      '寿司': 'restaurant',
-      'イタリアン': 'restaurant',
-      '中華': 'restaurant',
-      'その他': 'restaurant',
+    // カテゴリをGoogle Placesのタイプとキーワードに変換
+    const categoryConfig = {
+      '居酒屋': { type: 'bar', keyword: '居酒屋' },
+      'カフェ': { type: 'cafe', keyword: 'カフェ コーヒー' },
+      'レストラン': { type: 'restaurant', keyword: 'レストラン' },
+      'ラーメン': { type: 'restaurant', keyword: 'ラーメン' },
+      '焼肉': { type: 'restaurant', keyword: '焼肉' },
+      '寿司': { type: 'restaurant', keyword: '寿司 鮨' },
+      'イタリアン': { type: 'restaurant', keyword: 'イタリアン イタリア料理' },
+      '中華': { type: 'restaurant', keyword: '中華料理 中華' },
+      'その他': { type: 'restaurant', keyword: '' },
     };
 
-    const type = typeMap[category] || 'restaurant';
+    const config = categoryConfig[category] || { type: 'restaurant', keyword: category };
 
     return new Promise((resolve) => {
       const location = new google.maps.LatLng(latitude, longitude);
 
+      // キーワード検索で同業種を優先
+      const searchOptions = {
+        location: location,
+        radius: radiusMeters,
+        type: config.type,
+        language: 'ja',
+      };
+
+      // キーワードがある場合は追加（より精度の高い同業種検索）
+      if (config.keyword) {
+        searchOptions.keyword = config.keyword;
+      }
+
       this.placesService.nearbySearch(
-        {
-          location: location,
-          radius: radiusMeters,
-          type: type,
-          language: 'ja',
-        },
+        searchOptions,
         (results, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
             const competitors = results.map(place => ({
@@ -175,6 +183,7 @@ const MapsService = {
                 place.geometry?.location?.lat(),
                 place.geometry?.location?.lng()
               ),
+              category: category, // 検索した業種を保存
             }));
 
             // 距離でソート

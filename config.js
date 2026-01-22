@@ -19,7 +19,7 @@ const CONFIG = {
 
   // アプリ設定
   APP_NAME: 'TONARINO',
-  DEFAULT_RADIUS_KM: 2, // 競合検索の半径（km）
+  DEFAULT_RADIUS_KM: 3, // 競合検索の半径（km）
   DEFAULT_AREA_TYPE: 'radius', // 'station' or 'radius'
 };
 
