@@ -1,0 +1,13 @@
+{
+  "name": "tonarino",
+  "version": "1.0.0",
+  "description": "飲食店競合分析・人気度把握アプリ TONARINO",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx serve ."
+  },
+  "keywords": ["restaurant", "analytics", "review"],
+  "author": "渡邊和則",
+  "license": "MIT"
+}
