@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 100" fill="none">
+  <!-- Left store (orange) -->
+  <g>
+    <!-- Building body -->
+    <rect x="30" y="35" width="50" height="45" rx="4" fill="#F97316"/>
+    <!-- Roof -->
+    <path d="M25 38 L55 15 L85 38" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="#FED7AA"/>
+    <!-- Door -->
+    <rect x="47" y="55" width="16" height="25" rx="2" fill="#FED7AA"/>
+    <!-- Window -->
+    <rect x="36" y="45" width="12" height="10" rx="2" fill="#FFF7ED"/>
+    <!-- Awning -->
+    <path d="M28 35 Q35 30 42 35 Q49 30 56 35 Q63 30 70 35 Q77 30 84 35" stroke="#EA580C" stroke-width="2.5" fill="none"/>
+  </g>
+  <!-- Right store (red/warm) -->
+  <g>
+    <!-- Building body -->
+    <rect x="88" y="35" width="50" height="45" rx="4" fill="#EF4444"/>
+    <!-- Roof -->
+    <path d="M83 38 L113 15 L143 38" stroke="#EF4444" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="#FECACA"/>
+    <!-- Door -->
+    <rect x="105" y="55" width="16" height="25" rx="2" fill="#FECACA"/>
+    <!-- Window -->
+    <rect x="94" y="45" width="12" height="10" rx="2" fill="#FFF1F2"/>
+    <!-- Awning -->
+    <path d="M86 35 Q93 30 100 35 Q107 30 114 35 Q121 30 128 35 Q135 30 142 35" stroke="#DC2626" stroke-width="2.5" fill="none"/>
+  </g>
+  <!-- Connecting ground line -->
+  <line x1="20" y1="80" x2="148" y2="80" stroke="#D6D3D1" stroke-width="2" stroke-linecap="round"/>
+  <!-- Text: Tonarino -->
+  <text x="165" y="62" font-family="'Noto Sans JP', sans-serif" font-size="36" font-weight="700" fill="#F97316" letter-spacing="-0.5">Tonarino</text>
+</svg>

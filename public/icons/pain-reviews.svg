@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <!-- Review stars comparison -->
+  <!-- My store card -->
+  <rect x="5" y="12" width="32" height="40" rx="6" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5"/>
+  <rect x="10" y="18" width="22" height="3" rx="1.5" fill="#E7E5E4"/>
+  <!-- Stars (fewer) -->
+  <g fill="#FBBF24">
+    <polygon points="13,30 14.5,27 16,30 13,28 16,28" />
+    <polygon points="19,30 20.5,27 22,30 19,28 22,28" />
+    <polygon points="25,30 26.5,27 28,30 25,28 28,28" />
+  </g>
+  <polygon points="31,30 32.5,27 34,30 31,28 34,28" fill="#E7E5E4"/>
+  <rect x="10" y="35" width="22" height="2" rx="1" fill="#E7E5E4"/>
+  <rect x="10" y="40" width="16" height="2" rx="1" fill="#E7E5E4"/>
+  <!-- Competitor card -->
+  <rect x="43" y="12" width="32" height="40" rx="6" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5"/>
+  <rect x="48" y="18" width="22" height="3" rx="1.5" fill="#E7E5E4"/>
+  <!-- Stars (more) -->
+  <g fill="#FBBF24">
+    <polygon points="51,30 52.5,27 54,30 51,28 54,28" />
+    <polygon points="57,30 58.5,27 60,30 57,28 60,28" />
+    <polygon points="63,30 64.5,27 66,30 63,28 66,28" />
+    <polygon points="69,30 70.5,27 72,30 69,28 72,28" />
+  </g>
+  <rect x="48" y="35" width="22" height="2" rx="1" fill="#E7E5E4"/>
+  <rect x="48" y="40" width="16" height="2" rx="1" fill="#E7E5E4"/>
+  <!-- VS arrow -->
+  <path d="M37 32 L43 32" stroke="#F97316" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+  <path d="M37 32 L31 32" stroke="#F97316" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+  <!-- Person thinking -->
+  <circle cx="40" cy="62" r="7" fill="#FDBA74"/>
+  <path d="M30 76 Q30 66 40 66 Q50 66 50 76" fill="#FDBA74"/>
+  <!-- Thought bubble -->
+  <circle cx="52" cy="54" r="2" fill="#E7E5E4"/>
+  <circle cx="56" cy="50" r="3" fill="#E7E5E4"/>
+</svg>

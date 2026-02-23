@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Speedometer arc bg -->
+  <path d="M18 76a46 46 0 0184 0" stroke="#DBEAFE" stroke-width="10" stroke-linecap="round"/>
+  <!-- Arc segment 1 (slow) -->
+  <path d="M18 76a46 46 0 0126-40" stroke="#93C5FD" stroke-width="10" stroke-linecap="round"/>
+  <!-- Arc segment 2 (medium) -->
+  <path d="M44 36a46 46 0 0132-8" stroke="#60A5FA" stroke-width="10" stroke-linecap="round"/>
+  <!-- Arc segment 3 (fast - highlighted) -->
+  <path d="M76 28a46 46 0 0126 48" stroke="#3B82F6" stroke-width="10" stroke-linecap="round"/>
+  <!-- Needle -->
+  <line x1="60" y1="76" x2="88" y2="38" stroke="#1D4ED8" stroke-width="4" stroke-linecap="round"/>
+  <!-- Center dot -->
+  <circle cx="60" cy="76" r="7" fill="#3B82F6"/>
+  <circle cx="60" cy="76" r="3" fill="white"/>
+  <!-- 10s badge -->
+  <rect x="32" y="88" width="56" height="24" rx="12" fill="#3B82F6"/>
+  <text x="60" y="104" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Inter, sans-serif">10s</text>
+  <!-- Lightning bolt -->
+  <path d="M96 16l-4 10h6l-8 14 2-8h-5l5-12h4z" fill="#FBBF24" opacity="0.7"/>
+</svg>

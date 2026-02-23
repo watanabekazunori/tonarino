@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <!-- Scattered improvement items -->
+  <!-- Checklist -->
+  <rect x="10" y="8" width="28" height="35" rx="5" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5"/>
+  <rect x="16" y="15" width="3" height="3" rx="0.5" stroke="#D6D3D1" stroke-width="1" fill="none"/>
+  <rect x="22" y="15" width="12" height="3" rx="1.5" fill="#E7E5E4"/>
+  <rect x="16" y="22" width="3" height="3" rx="0.5" stroke="#D6D3D1" stroke-width="1" fill="none"/>
+  <rect x="22" y="22" width="12" height="3" rx="1.5" fill="#E7E5E4"/>
+  <rect x="16" y="29" width="3" height="3" rx="0.5" stroke="#D6D3D1" stroke-width="1" fill="none"/>
+  <rect x="22" y="29" width="12" height="3" rx="1.5" fill="#E7E5E4"/>
+  <!-- Tools scattered -->
+  <rect x="44" y="10" width="22" height="16" rx="4" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/>
+  <text x="55" y="21" text-anchor="middle" font-size="10" fill="#D97706">💡</text>
+  <rect x="48" y="30" width="22" height="16" rx="4" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1"/>
+  <text x="59" y="41" text-anchor="middle" font-size="10" fill="#16A34A">📊</text>
+  <rect x="42" y="50" width="22" height="16" rx="4" fill="#E0E7FF" stroke="#A5B4FC" stroke-width="1"/>
+  <text x="53" y="61" text-anchor="middle" font-size="10" fill="#4F46E5">🎯</text>
+  <!-- Person confused -->
+  <circle cx="24" cy="56" r="7" fill="#FDBA74"/>
+  <path d="M14 70 Q14 60 24 60 Q34 60 34 70" fill="#FDBA74"/>
+  <!-- Question marks -->
+  <text x="10" y="52" font-size="10" fill="#A8A29E" font-weight="600">?</text>
+  <text x="32" y="48" font-size="8" fill="#D6D3D1" font-weight="600">?</text>
+</svg>

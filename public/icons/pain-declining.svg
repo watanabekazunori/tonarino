@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <!-- Declining chart -->
+  <rect x="8" y="10" width="64" height="45" rx="6" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5"/>
+  <!-- Grid lines -->
+  <line x1="16" y1="20" x2="16" y2="48" stroke="#F5F5F4" stroke-width="1"/>
+  <line x1="12" y1="48" x2="66" y2="48" stroke="#E7E5E4" stroke-width="1"/>
+  <!-- Declining line -->
+  <polyline points="20,25 30,28 40,32 50,38 60,44" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Declining area -->
+  <polygon points="20,25 30,28 40,32 50,38 60,44 60,48 20,48" fill="#EF4444" opacity="0.08"/>
+  <!-- Down arrow -->
+  <path d="M62,30 L62,42" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58,38 L62,42 L66,38" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Person worried -->
+  <circle cx="40" cy="64" r="7" fill="#FDBA74"/>
+  <path d="M30 78 Q30 68 40 68 Q50 68 50 78" fill="#FDBA74"/>
+  <!-- Worry marks -->
+  <line x1="35" y1="62" x2="37" y2="64" stroke="#78716C" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="43" y1="64" x2="45" y2="62" stroke="#78716C" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M37 67 Q40 65 43 67" stroke="#78716C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>

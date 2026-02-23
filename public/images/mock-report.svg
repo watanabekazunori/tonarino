@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" fill="none">
+  <!-- Browser frame -->
+  <rect x="0" y="0" width="600" height="380" rx="12" fill="#F5F5F4"/>
+  <rect x="0" y="0" width="600" height="32" rx="12" fill="#E7E5E4"/>
+  <rect x="0" y="20" width="600" height="12" fill="#E7E5E4"/>
+  <circle cx="18" cy="14" r="5" fill="#FCA5A5"/>
+  <circle cx="34" cy="14" r="5" fill="#FDE68A"/>
+  <circle cx="50" cy="14" r="5" fill="#86EFAC"/>
+  <rect x="70" y="8" width="460" height="14" rx="4" fill="#D6D3D1"/>
+  <text x="82" y="18" font-size="8" fill="#78716C" font-family="Inter, sans-serif">tonarino.app/report/abc123</text>
+
+  <!-- Content area -->
+  <rect x="16" y="44" width="568" height="320" rx="8" fill="white"/>
+
+  <!-- Header -->
+  <text x="36" y="72" font-size="14" fill="#1C1917" font-weight="700" font-family="sans-serif">口コミAI分析レポート</text>
+  <rect x="36" y="80" width="60" height="3" rx="1.5" fill="#F97316"/>
+
+  <!-- 5-axis radar chart area -->
+  <g transform="translate(140, 200)">
+    <!-- Pentagon grid -->
+    <polygon points="0,-70 66.5,-21.6 41.1,56.6 -41.1,56.6 -66.5,-21.6" fill="none" stroke="#E7E5E4" stroke-width="1"/>
+    <polygon points="0,-50 47.5,-15.4 29.4,40.5 -29.4,40.5 -47.5,-15.4" fill="none" stroke="#E7E5E4" stroke-width="0.5"/>
+    <polygon points="0,-30 28.5,-9.3 17.6,24.3 -17.6,24.3 -28.5,-9.3" fill="none" stroke="#E7E5E4" stroke-width="0.5"/>
+    <!-- Data polygon -->
+    <polygon points="0,-60 55,-15 20,50 -35,45 -50,-10" fill="#F97316" fill-opacity="0.15" stroke="#F97316" stroke-width="2"/>
+    <!-- Data points -->
+    <circle cx="0" cy="-60" r="3" fill="#F97316"/>
+    <circle cx="55" cy="-15" r="3" fill="#F97316"/>
+    <circle cx="20" cy="50" r="3" fill="#F97316"/>
+    <circle cx="-35" cy="45" r="3" fill="#F97316"/>
+    <circle cx="-50" cy="-10" r="3" fill="#F97316"/>
+    <!-- Labels -->
+    <text x="0" y="-78" text-anchor="middle" font-size="9" fill="#44403C" font-weight="600" font-family="sans-serif">接客</text>
+    <text x="78" y="-15" text-anchor="middle" font-size="9" fill="#44403C" font-weight="600" font-family="sans-serif">価格</text>
+    <text x="48" y="68" text-anchor="middle" font-size="9" fill="#44403C" font-weight="600" font-family="sans-serif">雰囲気</text>
+    <text x="-48" y="68" text-anchor="middle" font-size="9" fill="#44403C" font-weight="600" font-family="sans-serif">料理</text>
+    <text x="-78" y="-15" text-anchor="middle" font-size="9" fill="#44403C" font-weight="600" font-family="sans-serif">立地</text>
+  </g>
+
+  <!-- Score cards on right -->
+  <g>
+    <rect x="300" y="96" width="268" height="44" rx="6" fill="#FFF7ED" stroke="#FFEDD5" stroke-width="1"/>
+    <text x="316" y="116" font-size="9" fill="#78716C" font-family="sans-serif">接客</text>
+    <text x="316" y="132" font-size="16" fill="#F97316" font-weight="800" font-family="Inter, sans-serif">4.3</text>
+    <text x="356" y="116" font-size="8" fill="#44403C" font-family="sans-serif">「スタッフの対応が丁寧」との声多数。</text>
+    <text x="356" y="130" font-size="8" fill="#44403C" font-family="sans-serif">競合平均3.8を上回っています。</text>
+    <circle cx="548" cy="118" r="12" fill="#22C55E" fill-opacity="0.15"/>
+    <text x="548" y="122" text-anchor="middle" font-size="10" fill="#16A34A" font-weight="700">○</text>
+  </g>
+  <g>
+    <rect x="300" y="148" width="268" height="44" rx="6" fill="#FFF7ED" stroke="#FFEDD5" stroke-width="1"/>
+    <text x="316" y="168" font-size="9" fill="#78716C" font-family="sans-serif">価格</text>
+    <text x="316" y="184" font-size="16" fill="#F97316" font-weight="800" font-family="Inter, sans-serif">3.1</text>
+    <text x="356" y="168" font-size="8" fill="#44403C" font-family="sans-serif">「少し高い」という意見あり。</text>
+    <text x="356" y="182" font-size="8" fill="#44403C" font-family="sans-serif">セットメニュー導入を検討。</text>
+    <circle cx="548" cy="170" r="12" fill="#EF4444" fill-opacity="0.15"/>
+    <text x="548" y="174" text-anchor="middle" font-size="10" fill="#EF4444" font-weight="700">△</text>
+  </g>
+  <g>
+    <rect x="300" y="200" width="268" height="44" rx="6" fill="#FFF7ED" stroke="#FFEDD5" stroke-width="1"/>
+    <text x="316" y="220" font-size="9" fill="#78716C" font-family="sans-serif">雰囲気</text>
+    <text x="316" y="236" font-size="16" fill="#F97316" font-weight="800" font-family="Inter, sans-serif">4.5</text>
+    <text x="356" y="220" font-size="8" fill="#44403C" font-family="sans-serif">「落ち着く空間」「内装がおしゃれ」</text>
+    <text x="356" y="234" font-size="8" fill="#44403C" font-family="sans-serif">が高評価の要因です。</text>
+    <circle cx="548" cy="222" r="12" fill="#22C55E" fill-opacity="0.15"/>
+    <text x="548" y="226" text-anchor="middle" font-size="10" fill="#16A34A" font-weight="700">○</text>
+  </g>
+
+  <!-- Improvement suggestions -->
+  <rect x="300" y="260" width="268" height="90" rx="6" fill="#F5F5F4"/>
+  <text x="316" y="280" font-size="10" fill="#1C1917" font-weight="700" font-family="sans-serif">💡 改善提案</text>
+  <text x="316" y="298" font-size="8" fill="#44403C" font-family="sans-serif">1. ランチセットメニューの導入で価格評価UP</text>
+  <text x="316" y="314" font-size="8" fill="#44403C" font-family="sans-serif">2. SNS投稿を促すフォトスポットの設置</text>
+  <text x="316" y="330" font-size="8" fill="#44403C" font-family="sans-serif">3. リピーター向けポイントカードの導入</text>
+</svg>

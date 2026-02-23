@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" fill="none">
+  <!-- Izakaya owner avatar -->
+  <circle cx="30" cy="30" r="28" fill="#FFF7ED"/>
+  <!-- Hair (shorter/masculine) -->
+  <path d="M16 24 Q16 10 30 10 Q44 10 44 24 L44 20 Q44 12 30 12 Q16 12 16 20 Z" fill="#44403C"/>
+  <!-- Face -->
+  <circle cx="30" cy="27" r="12" fill="#FDBA74"/>
+  <!-- Eyes -->
+  <circle cx="26" cy="26" r="1.5" fill="#44403C"/>
+  <circle cx="34" cy="26" r="1.5" fill="#44403C"/>
+  <!-- Confident smile -->
+  <path d="M25 31 Q30 35 35 31" stroke="#44403C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <!-- Eyebrows -->
+  <line x1="23" y1="22" x2="28" y2="22" stroke="#44403C" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="32" y1="22" x2="37" y2="22" stroke="#44403C" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Hachimaki (headband) -->
+  <rect x="16" y="16" width="28" height="4" rx="2" fill="#EF4444"/>
+  <!-- Chef coat -->
+  <path d="M18 42 Q18 38 30 38 Q42 38 42 42 L42 52 Q36 48 30 48 Q24 48 18 52 Z" fill="white" stroke="#E7E5E4" stroke-width="1"/>
+  <line x1="30" y1="38" x2="30" y2="48" stroke="#E7E5E4" stroke-width="1"/>
+</svg>

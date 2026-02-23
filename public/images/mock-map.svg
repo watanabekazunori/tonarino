@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" fill="none">
+  <!-- Browser frame -->
+  <rect x="0" y="0" width="600" height="380" rx="12" fill="#F5F5F4"/>
+  <rect x="0" y="0" width="600" height="32" rx="12" fill="#E7E5E4"/>
+  <rect x="0" y="20" width="600" height="12" fill="#E7E5E4"/>
+  <!-- Window dots -->
+  <circle cx="18" cy="14" r="5" fill="#FCA5A5"/>
+  <circle cx="34" cy="14" r="5" fill="#FDE68A"/>
+  <circle cx="50" cy="14" r="5" fill="#86EFAC"/>
+  <!-- URL bar -->
+  <rect x="70" y="8" width="460" height="14" rx="4" fill="#D6D3D1"/>
+  <text x="82" y="18" font-size="8" fill="#78716C" font-family="Inter, sans-serif">tonarino.app/results?place_id=ChIJ...</text>
+
+  <!-- Map area -->
+  <rect x="16" y="44" width="340" height="320" rx="8" fill="#E8F5E9"/>
+  <!-- Map grid lines -->
+  <line x1="16" y1="120" x2="356" y2="120" stroke="#C8E6C9" stroke-width="0.5"/>
+  <line x1="16" y1="200" x2="356" y2="200" stroke="#C8E6C9" stroke-width="0.5"/>
+  <line x1="16" y1="280" x2="356" y2="280" stroke="#C8E6C9" stroke-width="0.5"/>
+  <line x1="100" y1="44" x2="100" y2="364" stroke="#C8E6C9" stroke-width="0.5"/>
+  <line x1="190" y1="44" x2="190" y2="364" stroke="#C8E6C9" stroke-width="0.5"/>
+  <line x1="270" y1="44" x2="270" y2="364" stroke="#C8E6C9" stroke-width="0.5"/>
+  <!-- Roads -->
+  <line x1="16" y1="170" x2="356" y2="170" stroke="#FFFFFF" stroke-width="4"/>
+  <line x1="180" y1="44" x2="180" y2="364" stroke="#FFFFFF" stroke-width="4"/>
+  <line x1="60" y1="44" x2="280" y2="364" stroke="#FFFFFF" stroke-width="3" opacity="0.6"/>
+
+  <!-- My store marker (orange) -->
+  <circle cx="180" cy="170" r="14" fill="#F97316" stroke="white" stroke-width="3"/>
+  <text x="180" y="174" text-anchor="middle" font-size="10" fill="white" font-weight="700">★</text>
+  <text x="180" y="158" text-anchor="middle" font-size="7" fill="#F97316" font-weight="600" font-family="sans-serif">あなたのお店</text>
+
+  <!-- Competitor markers (gray) -->
+  <circle cx="120" cy="130" r="8" fill="#78716C" stroke="white" stroke-width="2"/>
+  <circle cx="240" cy="200" r="8" fill="#78716C" stroke="white" stroke-width="2"/>
+  <circle cx="140" cy="240" r="8" fill="#78716C" stroke="white" stroke-width="2"/>
+  <circle cx="280" cy="140" r="8" fill="#78716C" stroke="white" stroke-width="2"/>
+  <circle cx="90" cy="200" r="8" fill="#78716C" stroke="white" stroke-width="2"/>
+  <circle cx="220" cy="280" r="8" fill="#78716C" stroke="white" stroke-width="2"/>
+
+  <!-- 500m radius circle -->
+  <circle cx="180" cy="170" r="90" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.5"/>
+
+  <!-- Side panel -->
+  <rect x="368" y="44" width="220" height="320" rx="8" fill="white"/>
+  <!-- Panel header -->
+  <rect x="376" y="52" width="204" height="28" rx="4" fill="#FFF7ED"/>
+  <text x="478" y="70" text-anchor="middle" font-size="11" fill="#C2410C" font-weight="700" font-family="sans-serif">競合 6 件検出</text>
+
+  <!-- Competitor list items -->
+  <g>
+    <rect x="376" y="88" width="204" height="52" rx="4" fill="#FAFAF9"/>
+    <text x="386" y="106" font-size="10" fill="#1C1917" font-weight="600" font-family="sans-serif">カフェ・ド・フルール</text>
+    <text x="386" y="118" font-size="8" fill="#F59E0B">★★★★☆</text>
+    <text x="430" y="118" font-size="8" fill="#A8A29E">4.2 (128件)</text>
+    <text x="386" y="131" font-size="7" fill="#A8A29E">120m</text>
+  </g>
+  <g>
+    <rect x="376" y="146" width="204" height="52" rx="4" fill="#FAFAF9"/>
+    <text x="386" y="164" font-size="10" fill="#1C1917" font-weight="600" font-family="sans-serif">焼肉キング 渋谷店</text>
+    <text x="386" y="176" font-size="8" fill="#F59E0B">★★★★★</text>
+    <text x="430" y="176" font-size="8" fill="#A8A29E">4.5 (342件)</text>
+    <text x="386" y="189" font-size="7" fill="#A8A29E">230m</text>
+  </g>
+  <g>
+    <rect x="376" y="204" width="204" height="52" rx="4" fill="#FAFAF9"/>
+    <text x="386" y="222" font-size="10" fill="#1C1917" font-weight="600" font-family="sans-serif">串カツ田中 道玄坂店</text>
+    <text x="386" y="234" font-size="8" fill="#F59E0B">★★★★☆</text>
+    <text x="430" y="234" font-size="8" fill="#A8A29E">3.9 (89件)</text>
+    <text x="386" y="247" font-size="7" fill="#A8A29E">310m</text>
+  </g>
+  <g>
+    <rect x="376" y="262" width="204" height="52" rx="4" fill="#FAFAF9"/>
+    <text x="386" y="280" font-size="10" fill="#1C1917" font-weight="600" font-family="sans-serif">スターバックス 道玄坂</text>
+    <text x="386" y="292" font-size="8" fill="#F59E0B">★★★★☆</text>
+    <text x="430" y="292" font-size="8" fill="#A8A29E">4.1 (567件)</text>
+    <text x="386" y="305" font-size="7" fill="#A8A29E">180m</text>
+  </g>
+
+  <!-- Scroll indicator -->
+  <rect x="376" y="320" width="204" height="28" rx="4" fill="white"/>
+  <text x="478" y="338" text-anchor="middle" font-size="8" fill="#D6D3D1">+2件 さらに表示...</text>
+</svg>
