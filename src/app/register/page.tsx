@@ -20,6 +20,13 @@ const CHALLENGES = [
 
 const POSITIONS = ["オーナー", "店長", "マネージャー", "スタッフ", "その他"];
 
+// Detect in-app browsers (LINE, Instagram, Facebook, Twitter, etc.)
+function isInAppBrowser(): boolean {
+  if (typeof window === "undefined") return false;
+  const ua = navigator.userAgent || navigator.vendor || "";
+  return /Line|FBAN|FBAV|Instagram|Twitter|Snapchat|MicroMessenger|WeChat/i.test(ua);
+}
+
 function RegisterContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -45,6 +52,11 @@ function RegisterContent() {
   const [generatingReport, setGeneratingReport] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generationMessage, setGenerationMessage] = useState("");
+  const [inAppBrowser, setInAppBrowser] = useState(false);
+
+  useEffect(() => {
+    setInAppBrowser(isInAppBrowser());
+  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -56,6 +68,18 @@ function RegisterContent() {
   }, []);
 
   const handleGoogleLogin = async () => {
+    // If in-app browser, try to open in external browser
+    if (inAppBrowser) {
+      const currentUrl = window.location.href;
+      // Try to open in external browser (Safari/Chrome)
+      window.location.href = `x-safari-${currentUrl}`;
+      // Fallback: show message
+      setTimeout(() => {
+        setError("アプリ内ブラウザではGoogleログインが使用できません。SafariまたはChromeで開き直してください。");
+      }, 500);
+      return;
+    }
+
     setIsLoading(true);
     setError("");
     const { error } = await supabase.auth.signInWithOAuth({
@@ -330,11 +354,33 @@ function RegisterContent() {
 
       {step === "auth" && (
         <div className="animate-slide-up">
+          {/* In-app browser warning */}
+          {inAppBrowser && (
+            <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-2xl">
+              <p className="text-sm text-amber-800 font-medium mb-2">
+                アプリ内ブラウザを検出しました
+              </p>
+              <p className="text-xs text-amber-700 mb-3">
+                Googleログインをご利用の場合は、SafariまたはChromeで開き直してください。メールでの登録はそのままご利用いただけます。
+              </p>
+              <button
+                onClick={() => {
+                  // Copy URL to clipboard and prompt user
+                  navigator.clipboard?.writeText(window.location.href);
+                  alert("URLをコピーしました。SafariまたはChromeに貼り付けて開いてください。");
+                }}
+                className="text-xs bg-amber-100 hover:bg-amber-200 text-amber-800 font-medium px-3 py-1.5 rounded-lg transition-colors"
+              >
+                URLをコピーする
+              </button>
+            </div>
+          )}
+
           {/* Google auth button */}
           <button
             onClick={handleGoogleLogin}
-            disabled={isLoading}
-            className="w-full flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-primary-300 rounded-2xl px-6 py-4 transition-colors mb-4"
+            disabled={isLoading || inAppBrowser}
+            className="w-full flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-primary-300 rounded-2xl px-6 py-4 transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
