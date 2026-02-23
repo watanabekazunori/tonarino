@@ -18,6 +18,8 @@ const CHALLENGES = [
   "その他",
 ];
 
+const POSITIONS = ["オーナー", "店長", "マネージャー", "スタッフ", "その他"];
+
 function RegisterContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -30,6 +32,8 @@ function RegisterContent() {
   const [authMode] = useState<"google" | "email">("google");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
+  const [position, setPosition] = useState("");
   const [businessType, setBusinessType] = useState("");
   const [challenge, setChallenge] = useState("");
   const [challengeOther, setChallengeOther] = useState("");
@@ -124,6 +128,8 @@ function RegisterContent() {
       auth_provider: authMode,
       store_name: storeName,
       place_id: placeId,
+      user_name: userName,
+      position,
       business_type: businessType,
       challenge,
       challenge_other: challenge === "その他" ? challengeOther : null,
@@ -429,6 +435,41 @@ function RegisterContent() {
             />
           </div>
 
+          {/* User name */}
+          <div>
+            <label className="block text-sm font-medium text-stone-600 mb-1">
+              お名前 <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              required
+              className="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-primary-400 transition-colors"
+              placeholder="山田 太郎"
+            />
+          </div>
+
+          {/* Position */}
+          <div>
+            <label className="block text-sm font-medium text-stone-600 mb-1">
+              役職 <span className="text-red-400">*</span>
+            </label>
+            <select
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              required
+              className="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:outline-none focus:border-primary-400 transition-colors appearance-none"
+            >
+              <option value="">選択してください</option>
+              {POSITIONS.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Business type */}
           <div>
             <label className="block text-sm font-medium text-stone-600 mb-1">
@@ -504,7 +545,7 @@ function RegisterContent() {
 
           <button
             type="submit"
-            disabled={isLoading || !businessType || !challenge || !phone}
+            disabled={isLoading || !userName || !position || !businessType || !challenge || !phone}
             className="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 shadow-lg shadow-primary-500/20"
           >
             {isLoading ? "処理中..." : "登録して詳細レポートを見る"}
