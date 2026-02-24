@@ -166,6 +166,23 @@ function RegisterContent() {
       return;
     }
 
+    // Google Sheets にユーザー登録データを書き込み（fire-and-forget）
+    fetch("/api/sheets/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userName,
+        email: user.email || email,
+        position,
+        businessType,
+        challenge,
+        challengeOther: challenge === "その他" ? challengeOther : null,
+        phone,
+        storeName,
+        placeId,
+      }),
+    }).catch(() => {}); // エラーは無視
+
     // Fetch competitors first, then generate report
     setGeneratingReport(true);
     setGenerationProgress(5);

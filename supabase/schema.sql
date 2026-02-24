@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS users (
   challenge TEXT,
   challenge_other TEXT,
   phone TEXT,
+  user_name TEXT,
+  position TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

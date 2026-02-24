@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
+import InquiryForm from "@/components/InquiryForm";
 import { supabase } from "@/lib/supabase";
 
 // ========== V1 Legacy Types ==========
@@ -454,6 +455,8 @@ export default function ReportPage() {
   const [report, setReport] = useState<Report | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [storeName, setStoreName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -477,11 +480,13 @@ export default function ReportPage() {
 
         const { data: profile } = await supabase
           .from("users")
-          .select("store_name")
+          .select("store_name, user_name, email")
           .single();
 
         if (profile) {
           setStoreName(profile.store_name);
+          setUserName(profile.user_name || "");
+          setUserEmail(profile.email || "");
         }
       } catch (error) {
         console.error("Failed to fetch report:", error);
@@ -539,6 +544,15 @@ export default function ReportPage() {
       ) : (
         <ReportV1View report={report} storeName={storeName} />
       )}
+      {/* お問い合わせフォーム */}
+      <div className="max-w-5xl mx-auto px-4">
+        <InquiryForm
+          defaultName={userName}
+          defaultEmail={userEmail}
+          defaultStoreName={storeName}
+        />
+      </div>
+
       <div className="text-center pb-12">
         <button
           onClick={() => router.push("/mypage")}

@@ -5,6 +5,7 @@ import {
   calculateDistance,
   calculateRelevanceScore,
 } from "@/lib/genre-classifier";
+import { logSearch } from "@/lib/google-sheets";
 
 const BASE_URL = "https://maps.googleapis.com/maps/api/place";
 const SEARCH_RADIUS = 2000; // 2km
@@ -78,6 +79,17 @@ export async function POST(request: NextRequest) {
       ip,
       user_agent: userAgent,
     });
+
+    // Google Sheetsに検索データを書き込み（fire-and-forget）
+    logSearch({
+      query: query || name,
+      placeName: name,
+      placeId: place_id,
+      lat,
+      lng,
+      ip,
+      userAgent,
+    }).catch(() => {});
 
     // ========== 2段階検索 ==========
     const allResults: Map<string, any> = new Map();
