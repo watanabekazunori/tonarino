@@ -85,7 +85,7 @@ function RegisterContent() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=/register?place_id=${placeId}&name=${encodeURIComponent(storeName)}&lat=${lat}&lng=${lng}`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(`/register?place_id=${placeId}&name=${encodeURIComponent(storeName)}&lat=${lat}&lng=${lng}`)}`,
       },
     });
     if (error) {

@@ -185,6 +185,7 @@ ${ratingInfo}
       `analyzeMyStoreV2(${storeName})`
     );
     const text = result.response.text();
+    console.log(`[analyzeMyStoreV2] Gemini response length: ${text.length}, first 200 chars: ${text.slice(0, 200)}`);
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
@@ -192,6 +193,9 @@ ${ratingInfo}
         ...item,
         score: clampScore(item.score),
       }));
+      if (scores.length !== 4) {
+        console.warn(`[analyzeMyStoreV2] Expected 4 scores, got ${scores.length}. Using defaults.`);
+      }
       return {
         scores: scores.length === 4 ? scores : defaultScores,
         excerpts: {
@@ -199,9 +203,16 @@ ${ratingInfo}
           bad: (parsed.bad_reviews || []).slice(0, 4),
         },
       };
+    } else {
+      console.error(`[analyzeMyStoreV2] No JSON found in response: ${text.slice(0, 500)}`);
     }
-  } catch (e) {
-    console.error("Gemini V2 my store analysis error:", e);
+  } catch (e: any) {
+    console.error("Gemini V2 my store analysis error:", {
+      message: e?.message,
+      status: e?.status || e?.statusCode,
+      details: e?.errorDetails,
+      stack: e?.stack?.slice(0, 500),
+    });
   }
 
   return { scores: defaultScores, excerpts: emptyExcerpts };
@@ -269,6 +280,7 @@ ${storeTexts}
       `batchAnalyzeV2(${stores.map((s) => s.name).join(",")})`
     );
     const text = result.response.text();
+    console.log(`[batchAnalyzeV2] Gemini response length: ${text.length}, first 200 chars: ${text.slice(0, 200)}`);
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
@@ -278,9 +290,16 @@ ${storeTexts}
           score: clampScore(item.score),
         })),
       }));
+    } else {
+      console.error(`[batchAnalyzeV2] No JSON found in response: ${text.slice(0, 500)}`);
     }
-  } catch (e) {
-    console.error("Gemini V2 batch analysis error:", e);
+  } catch (e: any) {
+    console.error("Gemini V2 batch analysis error:", {
+      message: e?.message,
+      status: e?.status || e?.statusCode,
+      details: e?.errorDetails,
+      stack: e?.stack?.slice(0, 500),
+    });
   }
 
   // Return default scores for all stores
@@ -342,12 +361,20 @@ ${competitorTexts}
       `comparisonV2(${myStore.name})`
     );
     const text = result.response.text();
+    console.log(`[comparisonV2] Gemini response length: ${text.length}, first 200 chars: ${text.slice(0, 200)}`);
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0]);
+    } else {
+      console.error(`[comparisonV2] No JSON found in response: ${text.slice(0, 500)}`);
     }
-  } catch (e) {
-    console.error("Gemini V2 comparison error:", e);
+  } catch (e: any) {
+    console.error("Gemini V2 comparison error:", {
+      message: e?.message,
+      status: e?.status || e?.statusCode,
+      details: e?.errorDetails,
+      stack: e?.stack?.slice(0, 500),
+    });
   }
 
   return {
