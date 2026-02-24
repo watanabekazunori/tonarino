@@ -6,7 +6,7 @@ export async function analyzeReviews(
   storeName: string,
   reviews: Array<{ text: string; rating: number }>
 ) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const reviewTexts = reviews
     .map((r) => `[${r.rating}星] ${r.text}`)
@@ -58,7 +58,7 @@ export async function generateComparison(
   myStore: { name: string; reviews: string },
   competitors: Array<{ name: string; reviews: string }>
 ) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const competitorTexts = competitors
     .map((c) => `【${c.name}】\n${c.reviews}`)
