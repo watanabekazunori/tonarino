@@ -31,6 +31,9 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
+    console.error("exchangeCodeForSession error:", error.message, error);
+  } else {
+    console.error("No code param in callback. Search params:", searchParams.toString());
   }
 
   return NextResponse.redirect(`${origin}/auth/auth-code-error`);
