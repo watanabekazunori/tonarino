@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { classifyStore } from "@/lib/genre-classifier";
 
+export const maxDuration = 300;
+
 const BASE_URL = "https://maps.googleapis.com/maps/api/place";
 
 // Rate-limit helper: wait ms
